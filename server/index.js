@@ -4,8 +4,14 @@ const socketio = require('socket.io');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketio(server);
+corsOptions={
+    cors: true,
+    origins:["http://localhost:3000"],
+}
+const io = socketio(server, corsOptions);
 const router = require('./controllers/router');
+const cors = require('cors');
+
 
 const PORT = process.env.PORT || 5000;
 
