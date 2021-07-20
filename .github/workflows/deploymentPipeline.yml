@@ -1,0 +1,20 @@
+name: Deployment Pipeline
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**/README.md'
+jobs:
+  modules:
+    name: Installing modules
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: npm install
+        working-directory: ./server
+        run: npm install
