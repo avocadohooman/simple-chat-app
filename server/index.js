@@ -1,31 +1,28 @@
 const express = require('express');
 const http = require('http');
 const socketio = require('socket.io');
-const app = express();
-const server = http.createServer(app);
 const cors = require('cors');
-// for cross communication between client <> server
-app.use(cors());
-const origin = (process.env.NODE_ENV === 'production') ? 'https://pacific-woodland-70842.herokuapp.com/' : 'http://localhost:3000';
-corsOptions={
-    cors: true,
-    origins:[origin],
-}
-const io = socketio(server, corsOptions);
-const router = require('./controllers/router');
-const { addUser, removeUser, getUser, getUsersInRoom } = require('./services/userService');
-
-
+const app = express();
 //protecting from DOS Attack 
 app.use(express.json({limit: '10kb'}));
-
-
 // when client is in production, activate this line
 if (process.env.NODE_ENV === 'production') {
     console.log('using build');
     app.use(express.static('./build'));
 }
+app.use(cors());
+// for cross communication between client <> server
+const origin = (process.env.NODE_ENV === 'production') ? 'https://pacific-woodland-70842.herokuapp.com/' : 'http://localhost:3000';
+corsOptions={
+    cors: true,
+    origins:[origin],
+}
+const router = require('./controllers/router');
+app.use(router);
 
+const server = http.createServer(app);
+const io = socketio(server, corsOptions);
+const { addUser, removeUser, getUser, getUsersInRoom } = require('./services/userService');
 
 const PORT = process.env.PORT || 5000;
 
@@ -62,7 +59,6 @@ io.on('connection', (socket) => {
     });
 });
 
-app.use(router);
 
 server.listen(PORT, () => console.log(`Server has started on port ${PORT}`));
 
