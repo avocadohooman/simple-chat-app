@@ -17,7 +17,7 @@ const Chat = ({location}) => {
     const [messages, setMessages] = useState([]);
 
     const ENDPOINT = (process.env.NODE_ENV === 'production') ? 'pacific-woodland-70842.herokuapp.com' : 'localhost:5000';
-
+    console.log("ENDPOINT", ENDPOINT);
     useEffect(() => {
         const {name, room} = queryString.parse(location.search);
         socket = io(ENDPOINT);
