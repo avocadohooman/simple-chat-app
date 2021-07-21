@@ -4,6 +4,8 @@ const socketio = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 const cors = require('cors');
+// for cross communication between client <> server
+app.use(cors());
 corsOptions={
     cors: true,
     origins:["http://localhost:3000"],
@@ -11,6 +13,18 @@ corsOptions={
 const io = socketio(server, corsOptions);
 const router = require('./controllers/router');
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./services/userService');
+
+
+//protecting from DOS Attack 
+app.use(express.json({limit: '10kb'}));
+
+
+// when client is in production, activate this line
+if (process.env.NODE_ENV === 'production') {
+    console.log('using build');
+    app.use(express.static('./build'));
+}
+
 
 const PORT = process.env.PORT || 5000;
 
