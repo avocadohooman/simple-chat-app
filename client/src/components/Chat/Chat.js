@@ -16,7 +16,7 @@ const Chat = ({location}) => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
 
-    const ENDPOINT = 'localhost:5000';
+    const ENDPOINT = 'https://pacific-woodland-70842.herokuapp.com/';
 
     useEffect(() => {
         const {name, room} = queryString.parse(location.search);

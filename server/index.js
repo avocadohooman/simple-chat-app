@@ -6,9 +6,10 @@ const server = http.createServer(app);
 const cors = require('cors');
 // for cross communication between client <> server
 app.use(cors());
+const origin = (process.env.NODE_ENV === 'production') ? 'https://pacific-woodland-70842.herokuapp.com/' : 'http://localhost:3000';
 corsOptions={
     cors: true,
-    origins:["http://localhost:3000"],
+    origins:[origin],
 }
 const io = socketio(server, corsOptions);
 const router = require('./controllers/router');
