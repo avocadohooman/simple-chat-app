@@ -2,14 +2,10 @@ const express = require('express');
 const http = require('http');
 const socketio = require('socket.io');
 const cors = require('cors');
+const path = require('path');
 const app = express();
 //protecting from DOS Attack 
 app.use(express.json({limit: '10kb'}));
-// when client is in production, activate this line
-if (process.env.NODE_ENV === 'production') {
-    console.log('using build');
-    app.use(express.static('./build'));
-}
 app.use(cors());
 // for cross communication between client <> server
 const origin = (process.env.NODE_ENV === 'production') ? 'https://pacific-woodland-70842.herokuapp.com/' : 'http://localhost:3000';
@@ -17,8 +13,13 @@ corsOptions={
     cors: true,
     origins:[origin],
 }
+// when client is in production, activate this line
+if (process.env.NODE_ENV === 'production') {
+    console.log('using build');
+    app.use(express.static(path.join(__dirname, 'build')));
+}
 const router = require('./controllers/router');
-app.use(router);
+app.use('/chat', router);
 
 const server = http.createServer(app);
 const io = socketio(server, corsOptions);

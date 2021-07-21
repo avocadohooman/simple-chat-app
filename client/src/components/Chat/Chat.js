@@ -16,10 +16,11 @@ const Chat = ({location}) => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
 
-    const ENDPOINT = (process.env.NODE_ENV === 'production') ? 'pacific-woodland-70842.herokuapp.com' : 'localhost:5000';
-    console.log("ENDPOINT", ENDPOINT);
+    const ENDPOINT = process.env.NODE_ENV === 'production' ? 'pacific-woodland-70842.herokuapp.com' : 'localhost:5000';
+
     useEffect(() => {
         const {name, room} = queryString.parse(location.search);
+        console.log("ENDPOINT", ENDPOINT);
         socket = io(ENDPOINT);
         setName(name);
         setRoom(room);
