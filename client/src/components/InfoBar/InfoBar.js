@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './InfoBar.css';
 import closeIcon from '../../assets/closeIcon.png';
 import onlineIcon from '../../assets/onlineIcon.png';
